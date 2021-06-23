@@ -38,7 +38,7 @@ class Textos:
         tut_desc = self.menu_font.render("O Coronavírus está tentando invadir o planeta Terra.", 1, (255, 255, 255))
         tut_desc1 = self.menu_font.render("A vacina foi desenvolvida com uma nova tecnologia, mas,", 1, (255, 255, 255))
         tut_desc2 = self.menu_font.render("para ela funcionar, você precisa acertar os vírus com sua seringa!", 1,(255, 255, 255))
-        tut_desc3 = self.menu_font.render("O desafio é composto por 4 fases, e você tem 5 vidas para", 1,(255, 255, 255))
+        tut_desc3 = self.menu_font.render("O desafio é composto por 5 fases, e você tem 5 vidas para", 1,(255, 255, 255))
         tut_desc4 = self.menu_font.render("impedir que os vírus cheguem à Terra e contaminem os humanos.", 1,(255, 255, 255))
         tut_desc5 = self.menu_font.render("Boa Sorte!", 1, (255, 255, 255))
         tutorial_opc1 = self.menu_font.render("Voltar  (4)", 1, (255, 255, 255))

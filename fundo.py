@@ -2,16 +2,10 @@ import pygame
 import os
 from math import ceil
 
-
+# Desenha o fundo da tela
 class Fundo:
-    """
-    Esta classe cria o fundo do jogo
-    """
-
     def __init__(self, image="sky_fase0.png"):
-        """
-        Desenha o fundo da tela
-        """
+        
         image = os.path.join('imagens', image)
         image = pygame.image.load(image).convert()
 

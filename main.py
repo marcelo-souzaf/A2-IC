@@ -77,6 +77,7 @@ class Jogo:
         self.tela.blit(menu, (self.screen_size[0]/2 - self.screen_size[0]/3, (self.screen_size[1]/2)+40))
         self.tela.blit(sair, (self.screen_size[0]/2 - self.screen_size[0]/3, (self.screen_size[1]/2)+80))
 
+    # Gera um número definido de vírus de acordo com a fase e altera seus atributos
     def manutenção(self):
         r = random.randint(0, 4*(1+(self.nivel/2)))
         x = random.randint(1, self.screen_size[0])
@@ -133,13 +134,6 @@ class Jogo:
             v.draw(self.tela)
 
     def verifica_impactos(self, elemento, list, action):
-        """
-        Verifica ocorrência de colisões.
-        :param elemento: Instância de RenderPlain ou seja um grupo de sprites
-        :param list: lista ou grupo de sprites
-        :param action: função a ser chamada no evento de colisão
-        :return: lista de sprites envolvidos na colisão
-        """
         if isinstance(elemento, pygame.sprite.RenderPlain):
             hitted = pygame.sprite.groupcollide(elemento, list, 1, 0)
             for v in hitted.values():
@@ -152,11 +146,10 @@ class Jogo:
                 action()
             return elemento.morto
 
+    # Executa as ações dos elementos do jogo.
     def ação_elemento(self, explosionSound="short_explosion.wav", game_over="game_over.wav"):
-        """
-        Executa as ações dos elementos do jogo.
-        :return:
-        """
+        
+        # Move os vírus em direção ao jogador quando eles se aproximam
         for virus in self.elementos['virii']:
             if 0 < virus.get_pos()[0] - self.jogador.get_pos()[0] < 200:
                 virus.rect.move_ip(-1,0)
@@ -169,6 +162,7 @@ class Jogo:
             elif -200 < boss.get_pos()[0] - self.jogador.get_pos()[0] < 0:
                 boss.rect.move_ip(2,0)
                 
+        # Verifica se o personagem foi alvejado pelo boss
         self.verifica_impactos(self.jogador, self.elementos["tiros_inimigo"],
                                self.jogador.alvejado)
 
@@ -202,7 +196,6 @@ class Jogo:
             return
 
         # Verifica se o personagem atingiu algum alvo.
-
         hitted = self.verifica_impactos(self.elementos["tiros"],
                                         self.elementos["virii"],
                                         Virus.alvejado)
@@ -217,7 +210,7 @@ class Jogo:
         # Aumenta o número de pontos de acordo com quantidade atingida.
         self.jogador.set_pontos(self.jogador.get_pontos() + len(hitted))
 
-
+    # Faz a leitura dos eventos definidos por elementos do jogo ou pelo jogador
     def trata_eventos(self):
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
@@ -240,13 +233,15 @@ class Jogo:
             for boss in self.elementos['boss']:
                 boss.boss_atira(self.elementos['tiros_inimigo'])
             
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYDOWN:
             key = event.key
+            # Encerra o jogo
             if key == K_ESCAPE:
                 self.run = False
+            # Adiciona um leve atraso na ação de disparar
             elif key == K_SPACE:
                 pygame.time.set_timer(SHOOTEVENT, 150, loops = 1)
+            # Pausa o jogo
             if key == K_p:
                 if self.painel == "fases":
                     pause = True
@@ -259,6 +254,8 @@ class Jogo:
                             if event.key == K_p:
                                 pause = False
                                 pygame.mixer.music.unpause()
+                                
+        # Move o jogador
         keys = pygame.key.get_pressed()
         if keys[K_LEFT] or keys[K_a]:
             self.jogador.rect.move_ip(-8,0)
@@ -268,17 +265,11 @@ class Jogo:
             self.jogador.rect.move_ip(0,-4)
         if keys[K_DOWN] or keys[K_s]:
             self.jogador.rect.move_ip(0,4)
-                
-        # if self.interval > 10:
-        #     self.interval = 0
-        #     if keys[K_RCTRL] or keys[K_LCTRL]:
-        #         self.jogador.atira(self.elementos["tiros"])
 
     def menu_eventos(self):
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             if self.opcao == 0:
                 key = event.key
@@ -313,7 +304,6 @@ class Jogo:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             key = event.key
             if key == K_4:
@@ -327,7 +317,6 @@ class Jogo:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             key = event.key
             if key == K_1:
@@ -349,7 +338,6 @@ class Jogo:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             key = event.key
             if key == K_1 and self.nivel == 1:
@@ -381,7 +369,6 @@ class Jogo:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             key = event.key
             if key == K_1:
@@ -397,7 +384,6 @@ class Jogo:
         event = pygame.event.poll()
         if event.type == pygame.QUIT:
             self.run = False
-        # serve para quebrar o loop, fechar a janela.
         if event.type == KEYUP:
             key = event.key
             if key == K_4:
@@ -443,7 +429,7 @@ class Jogo:
                 self.manutenção()
                 self.atualiza_elementos(dt)
                 self.desenha_elementos()
-                if self.opcao == 0:  ##TELA DE MENU
+                if self.opcao == 0:  ###TELA DE MENU
                     self.text.jogo_text()
                     self.text.menu_text()
                     self.menu_eventos()
@@ -495,7 +481,7 @@ class Jogo:
                 pygame.display.flip()
 
             if self.painel == "zerou":
-                if self.opcao == 0:  ##TELA DE ZERAR
+                if self.opcao == 0:  ###TELA DE ZERAR
                     clock.tick(1000 / dt)
                     self.atualiza_elementos(dt)
                     self.desenha_elementos()
@@ -505,7 +491,7 @@ class Jogo:
                     self.tela.blit(pygame.image.load(os.path.join('imagens','bat2.png')), [(self.screen_size[0]-250)/2, 50])
                     pygame.display.flip()
 
-                if self.opcao == 1:  ##TELA DOS CRÉDITOS
+                if self.opcao == 1:  ###TELA DOS CRÉDITOS
                     clock.tick(1000 / dt)
                     self.atualiza_elementos(dt)
                     self.desenha_elementos()
@@ -579,12 +565,6 @@ if __name__ == '__main__':
     J = Jogo()
     J.loop_jogo()
     
+# Encerra a janela do pygame após encerrar o loop do jogo
 pygame.display.quit()
 pygame.quit()
-
-
-#TESTAR USAR O J.LOOP() NO PASSAR_NIVEL PARA OS VIRUS COMEÇAREM DO COMEÇO DA TELA PO
-
-#OU
-
-#CRIAR UM LOOP PRO ELEMENTO VIRUS :))

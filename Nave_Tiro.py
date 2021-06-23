@@ -17,8 +17,6 @@ class Nave(ElementoSprite):
 
     def colisão(self):
         if self.get_lives() <= 0:
-            #crash = pygame.mixer.Sound("crash.wav")
-            #crash.play()
             self.kill()
         else:
             self.set_lives(self.get_lives() - 1)
