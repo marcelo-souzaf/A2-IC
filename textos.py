@@ -18,6 +18,8 @@ class Textos:
     def sair_text(self):
         sair = self.menu_font.render("[ESC] SAIR", 1, (255, 255, 255))
         self.tela.blit(sair, (self.screen_size[0] / 2 + self.screen_size[0] / 3, self.screen_size[1]/1.075))
+        pause = self.menu_font.render("[P] PAUSAR", 1, (255, 255, 255))
+        self.tela.blit(pause, (self.screen_size[0] / 2 + self.screen_size[0] / 3, self.screen_size[1]/1.125))
 
     def jogo_text(self):
         over_text = self.over_font.render("CORONA SHOOTER", 1, (255, 255, 255))

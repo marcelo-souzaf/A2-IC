@@ -1,5 +1,4 @@
 from Nave_Tiro import Nave
-from elementos import ElementoSprite
 
 class Boss(Nave):
     def __init__(self, position, lives=100, image=None, new_size=[250,250]):
