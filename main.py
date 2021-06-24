@@ -186,6 +186,7 @@ class Jogo:
                         self.loop_musica_passar_zerar()
         
         if self.jogador.morto:
+            self.elementos['boss'].empty()
             game_over = os.path.join('sons', game_over)
             game_over = pygame.mixer.Sound(game_over)
             game_over.set_volume(0.08)
